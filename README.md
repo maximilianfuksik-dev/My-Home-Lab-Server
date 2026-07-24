@@ -49,4 +49,11 @@ To engineer, safely format, and document this infrastructure, the following spec
 
 
 
+## Planned Services (Target Architecture)
+
+- [ ] **Docker Engine & Compose:** Core containerization runtime for app isolation.
+- [ ] **Pi-hole:** Network-wide ad-blocking and local DNS resolution.
+- [ ] **Nginx Reverse Proxy:** Secure traffic routing to internal container ports.
+- [ ] **Flask / Node.js Dev Environments:** Hosting local sandboxed web APIs.
+
 
