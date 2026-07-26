@@ -42,6 +42,7 @@ To engineer, safely format, and document this infrastructure, the following spec
 * **Low-Level-Troubleshooting:**
     * Attempted to force-erase the block device using `diskpart` via an administrative Command Prompt (CMD), which triggered access-denied errors caused by strict Windows filesystem locks on removable media.
     * Switched execution environments to **Windows PowerShell (Admin)** to bypass standard OS restrictions.
+      
 * **The Resolution:**
     * Successfully wiped the partition table using the advanced `Clear-Disk -Number 1 -RemoveData -RemoveOEM`cmdlet.
     * Restored the device to a clean storage state, enabling the flash drive to be fully mapped by the host operating system.
@@ -53,8 +54,10 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Successfully reconfigured the keyboard layout mapping permanently to Western German standard specifications via `dpkg-reconfigure`.
    * Bypass the lack of text-editiors by utilizing an advanced shell redirection technique. Configured the Netplan core configuration file `00-installer-config.yaml`) using a `cat << 'EOF' | sudo tee` pipeline to force          administrative write operations.
    * **Lid Switch Optimization:** Modified `/etc/system/logind.conf` to set `HandleLidSwitch=ignore` and restarted the daemon via `sudo systemctl restart system-logind` to prevent the laptop from suspending when the lid          is closed.
-   * **Post-Installation Envronment Prep:**
-* **The Resolution:** Defined the declarative YAML infrastructure parameters for the `wlo1`interface, binding it securely via local DHCP access points. Executed `sudo netplan apply`, verified a fully operating TCP/IP stack within the isolated Linux environment, and succesfully established a remote headless **SSH session* from the main Windows PC.  
+* **Post-Installation Envronment Prep:**
+   * Updated the local package repositories (`sudo apt update`) and installed foundational quality-of-life tools and core diagnostic packages: `nano`, `curl`, `wget`, `git` and `iputils-ping`.
+     
+* **The Resolution:** Defined the declarative YAML infrastructure parameters for the `wlo1`interface, binding it securely via local DHCP access points. Executed `sudo netplan apply`, verified a fully operating TCP/IP stack within the isolated Linux environment, and succesfully established a remote headless **SSH session* from the main Windows PC, validating full functionality with the hardware lid close. 
 
 
 ## Planned Services (Target Architecture)
