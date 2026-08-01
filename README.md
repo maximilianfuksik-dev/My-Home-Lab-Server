@@ -68,6 +68,17 @@ To engineer, safely format, and document this infrastructure, the following spec
     * Enforced strict console isolation by changing the account's operational shell to non-interactive using `sudo usermod -s /usr/sbin/nologin backupuser`. This effectively prevents any interactive terminal logins. 
 * **The Obstacle:** Initial cross-platform file transfers via the Windows-PC triggered password prompts and execution failures because the minimal Linux enivorment actively blocked standard SSH access due to the `nologin`shell restriction. 
 
+### Day 4: SSH Key-Based Hardening & Storage Directory Debugging
+* **The Challenge:** Attempted to implement passwordless cryptographic authentication by generating an Ed25519 keypair (`ssh-keygen -t ed 25519`) on the windows host and pushing the public key to the server. 
+* **Troubleshooting Logs & Blockers:**
+    * **Directory Not Found & Typos:** Initial attempts to stage the authorization files using the `nano` editor threw directory creation faults due to an input syntay typo (`.shh` instead of `.ssh`). Resolved this by running structured directory generation commands: `sudo mkdir -p /home/backupuser/.ssh`. 
+    * **Linux Permissions Lockout:** File trnsfer payloads continuously failed with `Received message too long` or access denied. Diagnosed this as an ownership conflict because the hidden directoris were created with root privileges. 
+* **The Resolution:** Repaired the Unix file permission architecture by transferring absolute ownership to the target account and sealing the paths:
+    * `sudo chown -R backupuser:backupuser /home/backupuser/`
+    * `sudo chmod 700 /home/backupuser/.ssh`
+    * `sudo chmod 600 /home/backupuser/.ssh/.authorized_keys`
+
+
 
 ## Planned Services (Target Architecture)
 
