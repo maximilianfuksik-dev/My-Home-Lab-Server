@@ -37,6 +37,8 @@ To engineer, safely format, and document this infrastructure, the following spec
 * **Container Ingress:** Services will beseparated locally via unique Port Bindings (e.g., Port 80/443 for web traffic, Port 53 for local DNS sinkholing).
 
 ## Project Journal 
+> *Note: This project represents my ver first bare-metal Linux server installation. As a milestone in my engineering journey, it required extensive research, deep-diving into official Linux man-pages, and troubleshooting architectural restrictions step by step.*
+
 ### Day 1: Storage Media Recover & Bootable Media Creation 
 * **The Challenge:** The targeted 8GB USB flash driver was unrecognized by the Windows File Explorer and threw critical "Unknown Capacity" errors within the graphical Disk Management interface due to remnants of legacy        partitioning.
 * **Low-Level-Troubleshooting:**
@@ -58,6 +60,13 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Updated the local package repositories (`sudo apt update`) and installed foundational quality-of-life tools and core diagnostic packages: `nano`, `curl`, `wget`, `git` and `iputils-ping`.
      
 * **The Resolution:** Defined the declarative YAML infrastructure parameters for the `wlo1`interface, binding it securely via local DHCP access points. Executed `sudo netplan apply`, verified a fully operating TCP/IP stack within the isolated Linux environment, and succesfully established a remote headless **SSH session* from the main Windows PC, validating full functionality with the hardware lid close. 
+
+### Day 3: User Isolation & Restrictive Access Strategy (Least Privilege)
+* **The Challenge:** Initiated the setup for cross-platform automated backups from the Windows workstation. To adhere to "Principle of Least Privilege", an isolated user account was required that could securely ingest data but poses zero security risk to the bas operating system. 
+* **System Isolation Enineering:**
+    * Created a deicate unprivileged user via `sudo adduser backupuser`. 
+    * Enforced strict console isolation by changing the account's operational shell to non-interactive using `sudo usermod -s /usr/sbin/nologin backupuser`. This effectively prevents any interactive terminal logins. 
+* **The Obstacle:** Initial cross-platform file transfers via the Windows-PC triggered password prompts and execution failures because the minimal Linux enivorment actively blocked standard SSH access due to the `nologin`shell restriction. 
 
 
 ## Planned Services (Target Architecture)
