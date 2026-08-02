@@ -78,6 +78,20 @@ To engineer, safely format, and document this infrastructure, the following spec
     * `sudo chmod 700 /home/backupuser/.ssh`
     * `sudo chmod 600 /home/backupuser/.ssh/.authorized_keys`
 
+### Day 5: SSH Daemon Customization & Succesful Ent-to-End SFTP Verification
+* **The Challenge:** Despite fixing directory permissions, the `nologin`shell security policy kept forcing the connection back to standard password queries automation tests. 
+* **Advanced Infrastructure Hardening:**
+    * Deep-dived into the primary SSH server configuration at `/etc/ssh/sshd_config`.
+    * Apprnded a dedicated conditional block restricting the account to secure file system interactions while blocking interactive terminal subsystems:
+    ```text
+    Match User backupuser
+        ForceCommand internal-sftp
+        AllowTcpForwarding no
+        X11Forwarding no
+    ``` 
+    * Applied the configuration changes by restarting the server daemon: `sudo systemctl restart sshd`. 
+    * Tuned the cryptographic key ledger inside `/home/backupuser/.ssh/authorized_keys`by appending the `restrict` clause directly in fornt of the public key string.
+* **The Resolution:** Successfully validated the entire infrastructure workflow. Executed an automated pipeline from the Windows host using native `sftp` redirection, resulting in a passwordless, authenticated, fully secure file delivery of `test.txt`straight into the isolated storage volume of the headless laptop server. 
 
 
 ## Planned Services (Target Architecture)
