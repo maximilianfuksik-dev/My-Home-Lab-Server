@@ -94,6 +94,15 @@ To engineer, safely format, and document this infrastructure, the following spec
     * Tuned the cryptographic key ledger inside `/home/backupuser/.ssh/authorized_keys`by appending the `restrict` clause directly in fornt of the public key string.
 * **The Resolution:** Successfully validated the entire infrastructure workflow. Executed an automated pipeline from the Windows host using native `sftp` redirection, resulting in a passwordless, authenticated, fully secure file delivery of `test.txt`straight into the isolated storage volume of the headless laptop server. 
 
+### Day 6: Bash Automation, First Bash Script & Memory-Based Progress Tracking
+* **The Challenge:** Designed a local server-side processing system to automatically catalog, compress, and track incoming data logs. The goal was to provide an analytical delta progression summary (tracking character increases since the last backup) without standard OS presistent database solutions.
+* **Pre-Engineering Research:**
+    * Spent several days deep-diving into Unix shell-scripting fundamentals, understanding variable scopes, conditional exextution tress, and pipe-redirection paradigms before writing the production code.
+* **Data Metrics Engineering:**
+    * Developed a comprehensive Bash automation script (`backup_process.sh`) utilizing low-level command pipelines.
+    * Leveraged `find` and `wc -l` to map directory structure counts while filtering out hidden core SSH components. 
+    * Implemented a data-agnostic character analytics "engine" using `find -exec cat {} + | wc -m` to evaluate global alphanumeric sizes across multi-nested plaintext layers. 
+    * Engineered a stateless persistence mechanism by utilizing a local point-in-time hidden file tracker (`.backup_last_chars.txt`), dynamically calculating mathematical delta values (`$((CURRENT_CHARS  - LAST_CHARS))`) during raw system runtime. 
 
 ## Planned Services (Target Architecture)
 
