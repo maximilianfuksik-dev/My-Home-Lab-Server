@@ -36,10 +36,12 @@ def main():
         # Load private crpyto SSH key from Windows
         key = paramiko.Ed25519Key.from_private_key_file(PRIVATE_KEY_PATH)
         
-        # Setup SSH Transport Channel
-        ssh_transport = paramiko.Transport((SERVER_IP, 22))
-        ssh_transport.connect(username=BACKUP_USER, pkey=key)
-        sftp = paramiko.SFTPClient.from_transport(ssh_transport)
+        # Setup direct SFTP connection to bypass ForceCommand internal-sftp
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh_client.connect(SERVER_IP, username=BACKUP_USER, pkey=key, disabled_algorithms={'pubkeys': ['rsa-sha2-256', 'rsa-sha2-512']})
+        sftp = ssh_client.open_sftp()
+
         
         #Upload : os.walk loops through ALL subdirectories, folders, and files
         for root, dirs, files in os.walk(SOURCE_DIR):
@@ -71,7 +73,7 @@ def main():
                 print(f" Uploades: {relative_path}")
                 
         sftp.close()
-        ssh_transport.close()
+        ssh_client.close()
 
         print("-" * 69)
         print("[*] Transfer complete. Triggering server-side processing...")
