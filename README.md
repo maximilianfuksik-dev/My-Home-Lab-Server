@@ -112,6 +112,13 @@ To engineer, safely format, and document this infrastructure, the following spec
     * Leveraged `curl -d @/tmp/discord.json` to safely stream structured JSON text objects, guaranteein absolute parsing immunity against character dropouts. 
 * **The Resolution:** Successfully automated system management operations. Configured an absolute background cron schedule (`crontab -e `) pointing to `0 3 * * *`for autonomous nightly compression routines (`.tar.gz`). Verified end-to-end telemetry compliance with a manual execution test, resulting in plaintext server metrics delicered instantly to an external Discord monitoring channel.
 
+### Day 8: Local Storage Archiving & Linux Directory Permission Debugging
+* **The Challenge:** Wanted the server to automatically compress the received files into a timestamp archive (`.tar.gz`) to preserve disk space. During execution tests, the automation halted with a critical "Permission denied" error.
+* **The Resolution:**
+    * Integrated a automated `tar -czf` backup pipeline into the server script, saving the compressed packages under `/home/max/archives/`.
+   * Learned that Linux enforces strict directory ownership. Since the uploaded files belonged to the unprivileged `backupuser`, the admin user `max` was initially blocked from accessing them until folder permissions were corrected.
+
+
 
 ## Planned Services (Target Architecture)
 
