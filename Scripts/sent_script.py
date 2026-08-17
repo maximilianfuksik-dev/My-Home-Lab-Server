@@ -7,13 +7,15 @@ import paramiko
 
 # CONFIG
 
-SOURCE_DIR = os.path.expanduser("C:\Users\Student\Desktop\Obsidian\FIAE VAULT")
+SOURCE_DIR = r"C:\Users\Student\Desktop\Obsidian\FIAE VAULT"
+
 
 # SERVER DETAILS
 SERVER_IP = "192.168.178.40"
 ADMIN_USER = "max"
 BACKUP_USER = "backupuser"
-PRIVATE_KEY_PATH = os.path.expanduser(r"~\.ssh\id_ed25519")
+PRIVATE_KEY_PATH = os.path.join(os.environ['USERPROFILE'], '.ssh', 'id_ed25519')
+
 
 # ===============================================================0
 
@@ -45,7 +47,7 @@ def main():
                 
                 local_file_path= os.path.join(root, filename)
                 
-                relative_path = os.path.realpath(local_file_path, SOURCE_DIR)
+                relative_path = os.path.relpath(local_file_path, SOURCE_DIR)
                 
                 # Format the remote path for Linux 
                 remote_file_path = f"/home/{BACKUP_USER}/{relative_path}".replace('\\','/')
