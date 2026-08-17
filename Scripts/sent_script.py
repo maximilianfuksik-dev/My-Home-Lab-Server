@@ -1,20 +1,18 @@
-import os 
+import os
 import paramiko
+from dotenv import load_dotenv
 
-# ============================================================================================
-# Python to Linux Notes Script
-#=============================================================================================
+# Load sensitive environment variables from the local .env file
+load_dotenv()
 
-# CONFIG
+# --- CONFIGURATION FROM ENVIRONMENT VARIABLES ---
+SOURCE_DIR = os.getenv("SOURCE_DIR")
+SERVER_IP = os.getenv("SERVER_IP")
+ADMIN_USER = os.getenv("ADMIN_USER")
+BACKUP_USER = os.getenv("BACKUP_USER")
+PRIVATE_KEY_PATH = os.getenv("PRIVATE_KEY_PATH")
+# =====================================================================
 
-SOURCE_DIR = r"C:\Users\Student\Desktop\Obsidian\FIAE VAULT"
-
-
-# SERVER DETAILS
-SERVER_IP = "192.168.178.40"
-ADMIN_USER = "max"
-BACKUP_USER = "backupuser"
-PRIVATE_KEY_PATH = os.path.join(os.environ['USERPROFILE'], '.ssh', 'id_ed25519')
 
 
 # ===============================================================0
