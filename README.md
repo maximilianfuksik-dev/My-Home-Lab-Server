@@ -119,6 +119,12 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Learned that Linux enforces strict directory ownership. Since the uploaded files belonged to the unprivileged `backupuser`, the admin user `max` was initially blocked from accessing them until folder permissions were corrected.
 
 
+### Day 9: Python Virtual Environments & Client-Side Workspace Isolation (venv)
+* **The Challenge:** Transitioned to the Windows host workstation to build the file-transfer automation. During the initial setup, required python libraries were accidentally installed into the global operating system layer, risking dependency pollution.
+* **The Resolution:**
+   * Cleared the global Windows environment by uninstalling the external packages via the Command Prompt using `pip uninstall`.
+   * Implemented a clean workspace environment by initializing a local Python Virtual Environment (`python -m venv .venv`) directly on the desktop. All project dependencies are now safely isolated within this sandboxed workspace.
+
 
 ## Planned Services (Target Architecture)
 
