@@ -126,6 +126,12 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Implemented a clean workspace environment by initializing a local Python Virtual Environment (`python -m venv .venv`) directly on the desktop. All project dependencies are now safely isolated within this sandboxed workspace.
 
 
+### Day 10: Recursive Ingestion & Whitespace Path Parsing for Obsidian Vaults
+* **The Challenge:** The automation script had to synchronize a local Obsidian Knowledge Base (`FIAE VAULT`). This caused standard file-copying scripts to fail due to unescaped whitespaces in the directory name and structural blindness to nested subfolders.
+* **The Resolution:**
+   * Upgraded the Python script architecture from flat file matching to a recursive directory traversal tree using the `os.walk()` engine.
+   * Handled filesystem compatibility by transforming Windows backslashes (`\`) into POSIX forward slashes (`/`) and encapsulated the directory string as a raw path (`r"..."`), ensuring folder names with spaces are processed correctly.
+
 ## Planned Services (Target Architecture)
 
 - [ ] **Docker Engine & Compose:** Core containerization runtime for app isolation.
