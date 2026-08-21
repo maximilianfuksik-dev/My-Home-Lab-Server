@@ -118,19 +118,23 @@ To engineer, safely format, and document this infrastructure, the following spec
     * Integrated a automated `tar -czf` backup pipeline into the server script, saving the compressed packages under `/home/max/archives/`.
    * Learned that Linux enforces strict directory ownership. Since the uploaded files belonged to the unprivileged `backupuser`, the admin user `max` was initially blocked from accessing them until folder permissions were corrected.
 
-
 ### Day 9: Python Virtual Environments & Client-Side Workspace Isolation (venv)
 * **The Challenge:** Transitioned to the Windows host workstation to build the file-transfer automation. During the initial setup, required python libraries were accidentally installed into the global operating system layer, risking dependency pollution.
 * **The Resolution:**
    * Cleared the global Windows environment by uninstalling the external packages via the Command Prompt using `pip uninstall`.
    * Implemented a clean workspace environment by initializing a local Python Virtual Environment (`python -m venv .venv`) directly on the desktop. All project dependencies are now safely isolated within this sandboxed workspace.
 
-
 ### Day 10: Recursive Ingestion & Whitespace Path Parsing for Obsidian Vaults
 * **The Challenge:** The automation script had to synchronize a local Obsidian Knowledge Base (`FIAE VAULT`). This caused standard file-copying scripts to fail due to unescaped whitespaces in the directory name and structural blindness to nested subfolders.
 * **The Resolution:**
    * Upgraded the Python script architecture from flat file matching to a recursive directory traversal tree using the `os.walk()` engine.
    * Handled filesystem compatibility by transforming Windows backslashes (`\`) into POSIX forward slashes (`/`) and encapsulated the directory string as a raw path (`r"..."`), ensuring folder names with spaces are processed correctly.
+
+   ### Day 11: Dynamic SFTP Directory Construction & Binary Asset Filtering
+* **The Challenge:** Uploading nested files via SFTP failed because the subfolders did not exist yet on the Linux destination. Additionally, binary assets (like screenshots inside the Obsidian vault) flooded the server's text counters, corrupting the character statistics with unreadable code symbols.
+* **The Resolution:**
+   * Programmed a directory validation loop in `send_notes.py` using `sftp.stat()` and error handling. The script now dynamically creates missing subfolders via `sftp.mkdir()` before uploading the actual files.
+   * Patched the server-side Bash script with a logical OR-expression filter (`\( -name "*.md" -o -name "*.txt" \)`). The pipeline now backs up all images normally, but ignores them during character metrics to keep the text statistics accurate.
 
 ## Planned Services (Target Architecture)
 
