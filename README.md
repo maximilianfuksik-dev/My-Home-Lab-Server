@@ -136,6 +136,12 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Programmed a directory validation loop in `send_notes.py` using `sftp.stat()` and error handling. The script now dynamically creates missing subfolders via `sftp.mkdir()` before uploading the actual files.
    * Patched the server-side Bash script with a logical OR-expression filter (`\( -name "*.md" -o -name "*.txt" \)`). The pipeline now backs up all images normally, but ignores them during character metrics to keep the text statistics accurate.
 
+### Day 12: Cryptographic Identity Recovery after Password Modification
+* **The Challenge:** After updating the server-side administrator password, the automated script failed with an "Authentication failed" error because the security keys on the host machine were out of sync.
+* **The Resolution:**
+   * Generated a fresh, high-security Ed25519 cryptographic key pair within the Windows PowerShell directory using `ssh-keygen -t ed25519`.
+   * Transferred the new public identity asset (`id_ed25519.pub`) to the server's `authorized_keys` file and secured the hidden directories using proper ownership (`chown`) and strict file permissions (`chmod 600`).   
+
 ## Planned Services (Target Architecture)
 
 - [ ] **Docker Engine & Compose:** Core containerization runtime for app isolation.
