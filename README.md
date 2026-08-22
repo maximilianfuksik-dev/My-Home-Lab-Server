@@ -147,7 +147,13 @@ To engineer, safely format, and document this infrastructure, the following spec
 * **The Resolution:**
    * Refactored the network logic in `send_notes.py` to initiate a native, direct SFTP client pipeline, bypassing the server's interactive shell restrictions completely.
    * Solved background runtime blockages by accessing the system's core privilege manager via `sudo visudo` and appending a precise `NOPASSWD` rule for this specific script path, allowing automated execution without manual prompts.
-   
+
+### Day 14: Decoupled JSON Payloads, Real-Time Monitoring & Environment Sanitization
+* **The Challenge:** The script crashed with an `unexpected EOF` error because the expanded Discord text message became too complex for the standard console variable memory. Also, private configuration data (IP addresses and paths) had to be hidden before publishing the code.
+* **The Resolution:**
+   * Fixed string parsing anomalies by decoupling the notification layout from execution memory. The script now writes metrics into a temporary `/tmp/discord.json` file and streams it via `curl`, delivering a clean, emoji-free status message directly to Discord.
+   * Sanitized the open-source files using the `python-dotenv` framework. Moved all sensitive operational parameters into a local hidden `.env` file blocked via `.gitignore`, while providing a public configuration template called `.env.example`.
+
 ## Planned Services (Target Architecture)
 
 - [ ] **Docker Engine & Compose:** Core containerization runtime for app isolation.
