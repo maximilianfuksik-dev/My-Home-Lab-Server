@@ -142,6 +142,12 @@ To engineer, safely format, and document this infrastructure, the following spec
    * Generated a fresh, high-security Ed25519 cryptographic key pair within the Windows PowerShell directory using `ssh-keygen -t ed25519`.
    * Transferred the new public identity asset (`id_ed25519.pub`) to the server's `authorized_keys` file and secured the hidden directories using proper ownership (`chown`) and strict file permissions (`chmod 600`).   
 
+### Day 13: Protocol Bypassing & Administrative Privilege Escalation (visudo)
+* **The Challenge:** The pipeline remained blocked due to a double-security lock: the server's shell restrictions conflicted with standard connection rules, and the Linux kernel paused the background automation to demand a manual administrative password.
+* **The Resolution:**
+   * Refactored the network logic in `send_notes.py` to initiate a native, direct SFTP client pipeline, bypassing the server's interactive shell restrictions completely.
+   * Solved background runtime blockages by accessing the system's core privilege manager via `sudo visudo` and appending a precise `NOPASSWD` rule for this specific script path, allowing automated execution without manual prompts.
+   
 ## Planned Services (Target Architecture)
 
 - [ ] **Docker Engine & Compose:** Core containerization runtime for app isolation.
